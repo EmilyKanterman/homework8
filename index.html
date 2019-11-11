@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Drawing Area</title>
+<style>
+	canvas {
+	    border:5px solid #d3d3d3;
+	    display: block;
+	}
+</style>
+</head>
+
+<!-- You can add your style here rather than in an external style sheet. -->
+
+<body> 
+    <!-- DO NOT MODIFY THIS HTML -->
+    <canvas id = "myCanvas" width = "350" height = "500"  ></canvas>
+    <input type = "color" id = "picker"/>
+</body>
+
+<script>
+    // find the canvas element
+    var canvas= document.querySelector("#myCanvas"); 
+    // create a drawing object
+    var ctx = canvas.getContext("2d");
+    ctx.fillStyle="black"; 
+    // set this for the pen up and pen down part
+    var isDrawing=true;
+    draw();
+
+    function draw(posX, posY){
+        console.log("DRAWING!");
+        // for arrow up, arrow down
+        if (isDrawing==true){
+        ctx.beginPath();
+        ctx.arc(posX, posY, 10, 0, 2 *Math.PI);
+        ctx.fill(); }
+    }
+
+    // width of 80% of the screen width and a height of 80% of the screen height.
+    // https://stackoverflow.com/questions/27759753/update-canvas-dimensions-as-window-is-reshaped
+    function size(){
+        var canvas = document.querySelector("#myCanvas");
+        canvas.width = window.innerWidth * 0.80
+        canvas.height = window.innerHeight * 0.80
+    }
+    size();
+
+
+    myCanvas.addEventListener(
+        'mousemove', function (e){
+        console.log(e.x)
+        console.log(e.y)
+        draw(e.x, e.y);
+    })
+
+    // https://teamtreehouse.com/community/elementaddeventlistenerchange-function-vs-elementonchange-what-is-the-difference-between-the-two
+    color_picker=document.getElementById("picker");
+    window.addEventListener('change', function(e){
+        console.log("pick color")
+        color=color_picker.value;
+        ctx.fillStyle=color;
+        })
+        
+// use a series of if statements for changing the color
+    window.addEventListener(
+        'keydown', function (e){
+        console.log(e);
+        if (event.key=='b' | event.key=='B'){
+            ctx.fillStyle="blue";
+        }
+        else if (event.key=='y' | event.key=='Y'){
+            ctx.fillStyle='yellow';
+        }
+
+        else if (event.key =='r' | event.key=='R'){
+            ctx.fillStyle='red';
+        }
+
+        else if (event.key =='g' | event.key=='G'){
+            ctx.fillStyle='green';
+        }
+// https://www.w3schools.com/tags/canvas_clearrect.asp - space bar to clear
+        if (event.key == ' '){
+            console.log("clear to blank")
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // pen up pen down
+        if (event.key=='ArrowUp'){
+            isDrawing=false
+            console.log("Pen up")}
+
+        if (event.key=='ArrowDown'){
+            isDrawing=true;
+            console.log("Pen down")
+        }
+        })
+
+</script>
+</html> 
+
+<!-- https://www.w3schools.com/tags/ref_canvas.asp -->
